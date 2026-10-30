@@ -1,0 +1,71 @@
+
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+<div class="card">
+
+    <h1>{{ student.full_name }}</h1>
+
+    {% if student.photo %}
+        <img
+            src="{{ student.photo.url }}"
+            alt="Фото студента"
+            width="180"
+            style="border-radius: 12px;"
+        >
+    {% endif %}
+
+    <h2>Личная информация</h2>
+
+    <p><b>Логин:</b> {{ student.username }}</p>
+    <p><b>ФИО:</b> {{ student.full_name }}</p>
+    <p><b>Дата рождения:</b>
+        {{ student.birth_date|default:"Не указана" }}
+    </p>
+    <p><b>Пол:</b> {{ student.get_gender_display }}</p>
+    <p><b>Email:</b> {{ student.email }}</p>
+    <p><b>Телефон:</b> {{ student.phone }}</p>
+    <p><b>Адрес:</b> {{ student.address }}</p>
+
+    <h2>Информация об обучении</h2>
+
+    <p><b>Студенческий билет:</b>
+        {{ student.student_id }}
+    </p>
+    <p><b>Группа:</b> {{ student.group }}</p>
+    <p><b>Специальность:</b> {{ student.specialty }}</p>
+    <p><b>Курс:</b> {{ student.course }}</p>
+    <p><b>Год поступления:</b>
+        {{ student.admission_year }}
+    </p>
+    <p><b>Форма обучения:</b>
+        {{ student.get_education_form_display }}
+    </p>
+    <p><b>Основа обучения:</b>
+        {{ student.get_funding_display }}
+    </p>
+    <p><b>Статус:</b>
+        {{ student.get_status_display }}
+    </p>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'student_update' student.pk %}"
+           class="btn">
+            Редактировать
+        </a>
+
+        <a href="{% url 'student_delete' student.pk %}"
+           class="btn btn-danger">
+            Удалить
+        </a>
+    {% endif %}
+
+    <a href="{% url 'student_list' %}"
+       class="btn btn-secondary">
+        Назад к списку
+    </a>
+
+</div>
+
+{% endblock %}
